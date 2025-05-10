@@ -26,7 +26,6 @@ public class RemoveADGroupsForApp
 
 	public void execute(SailPointContext context, String appName, String user) throws GeneralException
 	{
-		plan = new ProvisioningPlan();
 		// fetch the application and identity object
 		Application app = context.getObjectByName(Application.class, appName);
 		Identity identity = context.getObjectByName(Identity.class, user);
@@ -35,6 +34,7 @@ public class RemoveADGroupsForApp
 		List<Link> links = identity.getLinks(app);		
 		for(Link link :  links)
 		{
+			plan = new ProvisioningPlan();
 			List<String> listOfGroups = (List<String>) link.getAttribute("memberOf");
 			plan = createPlan(identity, app, link, listOfGroups);
 			
