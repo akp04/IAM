@@ -17,7 +17,7 @@ import sailpoint.tools.GeneralException;
 /*
  * Author 	 : Aakash Pandita
  * output 	 : we need to remove all groups for given AD App and Identity
- * Arguments : applicationName, username
+ * Arguments 	 : applicationName, username
  */
 public class RemoveADGroupsForApp 
 {
