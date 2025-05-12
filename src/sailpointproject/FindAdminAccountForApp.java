@@ -13,9 +13,9 @@ import sailpoint.tools.GeneralException;
 
 
 /*
- * Author : Aakash Pandita
- * Arguments : applicationName, context
- * Output	 : we need to find all the accounts/Links of identities which have admin accounts for given application
+ * Author 	: Aakash Pandita
+ * Arguments 	: applicationName, context
+ * Output	: we need to find all the accounts/Links of identities which have admin accounts for given application
  */
 public class FindAdminAccountForApp 
 {
