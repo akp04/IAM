@@ -1,4 +1,4 @@
-package sailpointproject;
+package sailpointproject.Rule;
 
 import sailpoint.api.SailPointContext;
 import sailpoint.object.Application;
