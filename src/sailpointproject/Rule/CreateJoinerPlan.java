@@ -1,4 +1,4 @@
-package sailpointproject;
+package sailpointproject.Rule;
 
 import java.util.ArrayList;
 import java.util.List;
