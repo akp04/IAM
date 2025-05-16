@@ -5,11 +5,13 @@ import java.util.List;
 
 import sailpoint.api.SailPointContext;
 import sailpoint.object.Application;
+import sailpoint.object.Bundle;
 import sailpoint.object.Identity;
 import sailpoint.object.Link;
 import sailpoint.object.ProvisioningPlan;
 import sailpoint.object.ProvisioningPlan.AccountRequest;
 import sailpoint.object.ProvisioningPlan.AttributeRequest;
+import sailpoint.object.RoleAssignment;
 import sailpoint.tools.GeneralException;
 
 /*
@@ -26,9 +28,10 @@ public class CreateLeaverPlan
 	
 	final String AUTHORITATIVE_APP = "HR App";
 	final String AD_APP_TYPE = "Active Directory - Direct";
+	final String ROLE_TYPE_TO_REMOVE = "business";
 	ProvisioningPlan plan = new ProvisioningPlan();
 	
-	public void execute(SailPointContext context, Identity identity) throws GeneralException
+	public ProvisioningPlan execute(SailPointContext context, Identity identity) throws GeneralException
 	{
 		plan.setIdentity(identity);
 		List<Link> links = identity.getLinks();
@@ -65,22 +68,54 @@ public class CreateLeaverPlan
 				
 			}			
 			// if application type is something else then need to generate plan according to the application
-			
-			
-			// step 2 - remove workgroups
-			List<Identity> wgs = identity.getWorkgroups();
-			if( null != wgs)
+
+		}
+		
+		// step 2 - remove workgroups
+		List<Identity> wgs = identity.getWorkgroups();
+		if( null != wgs)
+		{
+			AccountRequest wgAccReq = new AccountRequest(AccountRequest.Operation.Modify, ProvisioningPlan.APP_IIQ, null, identity.getName() );
+			for(Identity wg : wgs)
 			{
-				for(Identity wg : wgs)
+				AttributeRequest attRequest = new AttributeRequest("workgroups", ProvisioningPlan.Operation.Remove, wg.getName() );
+				wgAccReq.add(attRequest);
+				// List workgroupsRemoved = new ArrayList();
+				// workgroupsRemoved.add( wg.getName() );
+			}
+			plan.add(wgAccReq);
+		}
+		
+		// step 3 - remove roles
+		List<RoleAssignment> roleAssignments = identity.getRoleAssignments();
+		if(null != roleAssignments)
+		{
+			AccountRequest roleAccReq = new AccountRequest(AccountRequest.Operation.Modify, ProvisioningPlan.APP_IIQ, null, identity.getName() );
+			for(RoleAssignment roleAssignment : roleAssignments)
+			{
+				String roleName = roleAssignment.getRoleName();
+				if(null != roleName)
 				{
-					
+					Bundle role = context.getObjectByName(Bundle.class, roleName);
+					if(ROLE_TYPE_TO_REMOVE.equalsIgnoreCase(role.getType()))
+					{
+						AttributeRequest attrRequest = new AttributeRequest("assignedRoles", ProvisioningPlan.Operation.Remove, roleName );
+						roleAccReq.add(attrRequest);
+					}
 				}
 			}
-			
-			
-			// step 3 - remove roles
-			
+			plan.add(roleAccReq);
 		}
+		
+		/* we can add the workgroups removed back to workflow variable, so its visible in workflow as well
+		 * 
+		 * if(null != workgroupsRemoved)
+		 * {
+		 * 		workflow.put("workgroupsRemoved", workgroupsRemoved);
+		 * }
+		*/
+		
+		return plan;
 	}
 
 	private List<AttributeRequest> getAttributeList(Identity identity, String appName, String ENTITLEMENT_ATTRIBUTE) 
