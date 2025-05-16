@@ -1,0 +1,1 @@
+This is a basic Plugin to get started with. We will some basic methods like "Hello World!" and ping.
