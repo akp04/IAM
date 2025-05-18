@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<sailpoint>
+
+	<SPRight name="basicPluginRight"
+		displayName="Basic Plugin Administrator">
+		<Description>Allows user to access this endpoint</Description>
+	</SPRight>
+
+	<Capability name="BasicPluginPluginAdministrator"
+		displayName="Basic Plugin Administrator">
+		<Description>The Basic Plugin Administrator</Description>
+		<RightRefs>
+			<Reference class="sailpoint.object.SPRight"
+				name="basicPluginRight" />
+		</RightRefs>
+	</Capability>
+	
+</sailpoint>
