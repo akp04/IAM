@@ -1,1 +1,2 @@
-This is a basic Plugin to get started with. We will code some basic methods like "Hello World!" and ping.
+This is a basic Plugin to get started with. We will code a to ping this REST service.
+Anyone can extend this Plugin and add code as per the requirements.
