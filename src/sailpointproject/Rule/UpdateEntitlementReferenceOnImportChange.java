@@ -33,33 +33,32 @@ public class UpdateEntitlementReferenceOnImportChange
 			List<Profile> profiles = role.getProfiles();
 			for(Profile pro : profiles)
 			{
-			  List<Filter> listFilter = pro.getConstraints();
-			  for(Filter filter :  listFilter)
-			  {
-		          List<Object> value = (List) ((LeafFilter) filter).getValue();
-		          int index = -1;
-		          for(int i = 0; i < value.size(); i++)
-		          {
-		        	  Object entName = value.get(i);
-		        	  if(entName.toString().equals(entitlement))
-		        	  {
-		        		  index = i;
-		        		  break;
-		        	  }
-		          }
-		          if(index != -1)
-		          {
-		        	  value.remove(index);
-		        	  value.add(entitlement);
-		        	  
-		        	  context.saveObject(role);
-		        	  context.commitTransaction();
-		        	  context.decache();
-		          }
-			  }
+				List<Filter> listFilter = pro.getConstraints();
+				for(Filter filter :  listFilter)
+				{
+					List<Object> value = (List) ((LeafFilter) filter).getValue();
+					int index = -1;
+					for(int i = 0; i < value.size(); i++)
+					{
+						Object entName = value.get(i);
+						if(entName.toString().equals(entitlement))
+						{
+							index = i;
+							break;
+						}
+					}
+					if(index != -1)
+					{
+						value.remove(index);
+						value.add(entitlement);
+							  
+						context.saveObject(role);
+						context.commitTransaction();
+						context.decache();
+					}
+				}
 			}
-		}
-		
+		}		
 		return;
 	}
 }
