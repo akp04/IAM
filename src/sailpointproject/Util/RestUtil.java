@@ -20,41 +20,103 @@ public class RestUtil
 	
 	public static String getAccessTokenWithOAuth2(String clientID, String clientSecret, String tokenURL, String grant_type)
 	{
-		Client client  = ClientBuilder.newClient();
-		
-		MultivaluedMap formData = new MultivaluedHashMap();
-		formData.add("grant_type", grant_type);
-		
-		String credentials = clientID + ":" + clientSecret;
-        String encodedCredentials = "Basic " + Base64.encodeBase64String(credentials.getBytes());
+		Client client = null;
+		Response response = null;
+		String tokenString = null;
+		try
+		{
+			client  = ClientBuilder.newClient();
+			
+			MultivaluedMap formData = new MultivaluedHashMap();
+			formData.add("grant_type", grant_type);
+			// grant_type = "client_credentials" - This is generally default
+			
+			String credentials = clientID + ":" + clientSecret;
+	        String encodedCredentials = "Basic " + Base64.encodeBase64String(credentials.getBytes());
+	        
+	        response = (Response) client.
+	        					target(tokenURL).
+	        					request(MediaType.APPLICATION_JSON).
+	        					header("Authorization", encodedCredentials).
+	        					post(Entity.form(formData));
+	        
+	        tokenString = response.readEntity(String.class);
+		}
+        catch(Exception e)
+		{
+        	e.printStackTrace();
+		}
+		finally
+		{
+	        response.close();
+	        client.close();
+		}
         
-        Response response = (Response) client.
-        					target(tokenURL).
-        					request(MediaType.APPLICATION_JSON).
-        					header("Authorization", encodedCredentials).
-        					post(Entity.form(formData));
-        
-        
-        String tokenString = response.readEntity(String.class);
 		return tokenString;
 	}
 	
 	
 	public static String GETApiWithTokenAuthorization(String token, String API_URL )
 	{
-		Client client = ClientBuilder.newClient();
+		Client client = null;
+		Response response = null;
+		String output = null;		
+		try 
+		{
+			client = ClientBuilder.newClient();
+			
+			response = (Response)client.
+								target(API_URL).
+								request(MediaType.APPLICATION_JSON).
+								accept(MediaType.APPLICATION_JSON).
+								header("Authorization", token).
+								get();
+			
+			output = response.readEntity(String.class); // reading response as string format
+		}
+		catch(Exception e)
+		{
+        	e.printStackTrace();
+		}
+		finally
+		{
+	        response.close();
+	        client.close();
+		}
 		
-		Response response = (Response)client.
-							target(API_URL).
-							request(MediaType.APPLICATION_JSON).
-							accept(MediaType.APPLICATION_JSON).
-							header("Authorization", token).
-							get();
+		return output;		
+	}
+	
+	
+	public static String POSTApiWithTokenAuthorization(String token, String API_URL, String body )
+	{
+		Client client = null;
+		Response response = null;
+		String output = null;		
+		try 
+		{
+	        client = ClientBuilder.newClient();
+
+	        //String jsonPayload = "{\"name\": \"John\", \"age\": 30}";
+
+	        response = client
+	                .target(API_URL)
+	                .request(MediaType.APPLICATION_JSON)
+	                .post(Entity.entity(body, MediaType.APPLICATION_JSON));
+	        
+	        output = response.readEntity(String.class);
+		}
+		catch(Exception e)
+		{
+        	e.printStackTrace();
+		}
+		finally
+		{
+	        response.close();
+	        client.close();
+		}
 		
-		String output = response.readEntity(String.class); // reading response as string format
-		
-		return output;
-		
+		return output;		
 	}
 	
 	
