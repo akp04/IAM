@@ -32,24 +32,24 @@ public class RestUtil
 			// grant_type = "client_credentials" - This is generally default
 			
 			String credentials = clientID + ":" + clientSecret;
-	        String encodedCredentials = "Basic " + Base64.encodeBase64String(credentials.getBytes());
+	        	String encodedCredentials = "Basic " + Base64.encodeBase64String(credentials.getBytes());
 	        
-	        response = (Response) client.
-	        					target(tokenURL).
-	        					request(MediaType.APPLICATION_JSON).
-	        					header("Authorization", encodedCredentials).
-	        					post(Entity.form(formData));
+	        	response = (Response) client.
+					target(tokenURL).
+					request(MediaType.APPLICATION_JSON).
+					header("Authorization", encodedCredentials).
+					post(Entity.form(formData));
 	        
-	        tokenString = response.readEntity(String.class);
+	        	tokenString = response.readEntity(String.class);
 		}
-        catch(Exception e)
+        	catch(Exception e)
 		{
-        	e.printStackTrace();
+        		e.printStackTrace();
 		}
 		finally
 		{
-	        response.close();
-	        client.close();
+		        response.close();
+		        client.close();
 		}
         
 		return tokenString;
@@ -66,22 +66,22 @@ public class RestUtil
 			client = ClientBuilder.newClient();
 			
 			response = (Response)client.
-								target(API_URL).
-								request(MediaType.APPLICATION_JSON).
-								accept(MediaType.APPLICATION_JSON).
-								header("Authorization", token).
-								get();
+					target(API_URL).
+					request(MediaType.APPLICATION_JSON).
+					accept(MediaType.APPLICATION_JSON).
+					header("Authorization", token).
+					get();
 			
 			output = response.readEntity(String.class); // reading response as string format
 		}
 		catch(Exception e)
 		{
-        	e.printStackTrace();
+        		e.printStackTrace();
 		}
 		finally
 		{
-	        response.close();
-	        client.close();
+		        response.close();
+		        client.close();
 		}
 		
 		return output;		
@@ -95,25 +95,25 @@ public class RestUtil
 		String output = null;		
 		try 
 		{
-	        client = ClientBuilder.newClient();
-
-	        //String jsonPayload = "{\"name\": \"John\", \"age\": 30}";
-
-	        response = client
-	                .target(API_URL)
-	                .request(MediaType.APPLICATION_JSON)
-	                .post(Entity.entity(body, MediaType.APPLICATION_JSON));
-	        
-	        output = response.readEntity(String.class);
+		        client = ClientBuilder.newClient();
+	
+		        //String jsonPayload = "{\"name\": \"John\", \"age\": 30}";
+	
+		        response = client
+					.target(API_URL)
+					.request(MediaType.APPLICATION_JSON)
+					.post(Entity.entity(body, MediaType.APPLICATION_JSON));
+		        
+		        output = response.readEntity(String.class);
 		}
 		catch(Exception e)
 		{
-        	e.printStackTrace();
+        		e.printStackTrace();
 		}
 		finally
 		{
-	        response.close();
-	        client.close();
+		        response.close();
+		        client.close();
 		}
 		
 		return output;		
