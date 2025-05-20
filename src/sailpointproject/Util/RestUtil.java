@@ -18,7 +18,7 @@ public class RestUtil
 {
 	
 	
-	public String getAccessTokenWithOAuth2(String clientID, String clientSecret, String tokenURL, String grant_type)
+	public static String getAccessTokenWithOAuth2(String clientID, String clientSecret, String tokenURL, String grant_type)
 	{
 		Client client  = ClientBuilder.newClient();
 		
@@ -38,5 +38,24 @@ public class RestUtil
         String tokenString = response.readEntity(String.class);
 		return tokenString;
 	}
+	
+	
+	public static String GETApiWithTokenAuthorization(String token, String API_URL )
+	{
+		Client client = ClientBuilder.newClient();
+		
+		Response response = (Response)client.
+							target(API_URL).
+							request(MediaType.APPLICATION_JSON).
+							accept(MediaType.APPLICATION_JSON).
+							header("Authorization", token).
+							get();
+		
+		String output = response.readEntity(String.class); // reading response as string format
+		
+		return output;
+		
+	}
+	
 	
 }
