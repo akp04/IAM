@@ -13,7 +13,7 @@ import sailpoint.tools.GeneralException;
 /*
  * Author 	: Aakash Pandita
  * Arguments 	: entitlement that changed, context
- * Output	: we need to update all entitlement references when it changes at source. once aggregation is run those changes are pulled. 
+ * Output	: we need to update all entitlement references, in Roles/Bundles, when it changes at source. once aggregation is run those changes are pulled. 
  * 
  * This can be also considered as an LCE which is triggered once aggregation runs and brings the updated data.
  */
