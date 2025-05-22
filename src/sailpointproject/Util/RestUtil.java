@@ -69,7 +69,7 @@ public class RestUtil
 					target(API_URL).
 					request(MediaType.APPLICATION_JSON).
 					accept(MediaType.APPLICATION_JSON).
-					header("Authorization", token).
+					header("Authorization", "Bearer " + token).
 					get();
 			
 			output = response.readEntity(String.class); // reading response as string format
@@ -118,6 +118,36 @@ public class RestUtil
 		
 		return output;		
 	}
-	
+
+	public static String PUTApiWithTokenAuthorization(String token, String API_URL, String body) 
+	{
+		Client client = null;
+		Response response = null;
+		String output = null;
+		
+		try 
+		{
+			client = ClientBuilder.newClient();
+			
+			response = client
+				.target(API_URL)
+				.request(MediaType.APPLICATION_JSON)
+				.header("Authorization", "Bearer " + token)
+				.put(Entity.entity(body, MediaType.APPLICATION_JSON));
+			
+			output = response.readEntity(String.class);
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		} 
+		finally
+		{
+			if (response != null) response.close();
+			if (client != null) client.close();
+		}
+		
+		return output;
+	}
 	
 }
