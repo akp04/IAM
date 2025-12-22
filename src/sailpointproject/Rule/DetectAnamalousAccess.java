@@ -23,10 +23,10 @@ public class DetectAnamalousAccess
 	// get users manager
 	// get all team mates, which is, get all users who also report to same manager
 	
-	HashSet<String> allAccesses;
+	HashSet<String> ALL_ACCESSES;
 	public boolean execute(SailPointContext context, ProvisioningPlan plan) throws GeneralException
 	{
-		allAccesses = new HashSet();
+		ALL_ACCESSES = new HashSet<String>();
 		
 		// check for anamalous request from plan
 		
@@ -79,7 +79,7 @@ public class DetectAnamalousAccess
 	{
 		
 		//add entitlements to set
-		//allAccesses.add("");
+		//ALL_ACCESSES.add("");
 	}
 	
 	public List<String> getEntitlementsFromPlan(SailPointContext context, ProvisioningPlan plan)
